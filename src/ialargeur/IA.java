@@ -26,7 +26,7 @@ public boolean but(IA e){
             }
 }
 
-public ArrayList<IA> successeurs(IA e) throws CloneNotSupportedException{
+public ArrayList<IA> successeurs(IA e){
 IA e1=new IA();
 ArrayList<IA> ens= new ArrayList<>();
 e1=e;
@@ -84,41 +84,26 @@ public boolean valide(IA e){
     }
 }
 
-
-
-Tchemin SSALGO Cruche(e:Tetat)
-chemin,sol : Tchemin
-l: Tliste
-ens: Tens
-Fin : Booleen
-DEBUT
-    chemin<-CREER()
-    sol<-CREER()
-    l<-CREER()
-    ens<-CREER()
-    SI But?(e)
-        ALORS
-sol<-chemin 
-RETOURNER sol
-    SINON
-        ens<-Successeur(e)
-        TANT QUE NON VIDE(ens)
-            s<-CHOISIR(ens)
-            ens<-SUPPRIMER(ens,s)
-            l<-ADJ(l,s)
-        FTQ
-        Fin<-faux
-        TANT QUE NON VIDE(l) ET NON Fin FAIRE
-            chemin<-ADJ(TETE(l),chemin)
-            SI But?(QUEUE(chemin))
-                Fin<-VRAI
-                sol<-chemin
-            SINON 
-                chemin<-Cruche(TETE(l),chemin)
-            FSI
-            l<-RESTE(l)
-        FTQ
-        RETOURNER sol
-    FSI
-FSP
+public ArrayList<IA> cruche(IA e, ArrayList<IA> chemin){
+    ArrayList<IA> sol = new ArrayList<>();
+    ArrayList<IA> ens = new ArrayList<IA>();
+    boolean fin=false;
+    if(e.but(e)){
+        sol.addAll(chemin);
+        return sol;            
+    }else{
+        ens.addAll(e.successeurs(e));
+        while(!ens.isEmpty()&&!fin){
+            chemin.add(-1,ens.get(0));
+            if(e.but(chemin.get(-1))){
+                fin=true;
+                sol.addAll(chemin);
+            }else{
+                chemin.addAll(cruche(ens.get(0),chemin));
+            }
+            ens.remove(0);
+        }
+        return sol;
+    }
+} 
 }
